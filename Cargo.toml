@@ -1,0 +1,13 @@
+[package]
+name = "hasher"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+anyhow = "1.0.71"
+clap = { version = "4.3.2", features = ["derive"] }
+image = "0.24.6"
+indicatif = { version = "0.17.5", features = ["rayon"] }
+nalgebra = "0.32.2"
+rayon = "1.7.0"

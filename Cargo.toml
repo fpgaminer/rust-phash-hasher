@@ -5,9 +5,13 @@ edition = "2021"
 
 
 [dependencies]
-anyhow = "1.0.71"
-clap = { version = "4.3.2", features = ["derive"] }
-image = "0.24.6"
-indicatif = { version = "0.17.5", features = ["rayon"] }
-nalgebra = "0.32.2"
-rayon = "1.7.0"
+anyhow = "1.0.86"
+clap = { version = "4.5.4", features = ["derive"] }
+image = "0.25.1"
+indicatif = { version = "0.17.8", features = ["rayon"] }
+nalgebra = "0.32.5"
+rayon = "1.10.0"
+
+[profile.release]
+lto = true
+target-cpu = "native"

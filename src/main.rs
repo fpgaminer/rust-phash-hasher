@@ -1,7 +1,7 @@
 use anyhow::Context;
 use clap::Parser;
 use image::{self, imageops, io::Reader as ImageReader};
-use indicatif::ParallelProgressIterator;
+use indicatif::{ParallelProgressIterator, ProgressBar};
 use nalgebra::SMatrix;
 use rayon::prelude::*;
 use std::{
@@ -25,6 +25,10 @@ struct Args {
 	/// Output file.  Will be re-read on subsequent runs to avoid recomputing phashes.
 	#[arg(short, long)]
 	output: PathBuf,
+
+	/// Quiet mode.  Suppresses progress bar.
+	#[arg(short, long, default_value = "false")]
+	quiet: bool,
 }
 
 
@@ -63,9 +67,13 @@ fn main() {
 		}
 	});
 
-	eprintln!("Computing phashes...");
+	let mut iter = images.par_iter().progress_count(images.len() as u64);
 
-	images.par_iter().progress_count(images.len() as u64).for_each_with(tx, |tx, path| {
+	if args.quiet {
+		iter.progress = ProgressBar::hidden();
+	}
+
+	iter.for_each_with(tx, |tx, path| {
 		let phash = match image_path_to_phash(path, &dct_matrix, &dct_matrix_t) {
 			Ok(phash) => phash,
 			Err(err) => {

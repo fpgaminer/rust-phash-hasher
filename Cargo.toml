@@ -14,4 +14,3 @@ rayon = "1.10.0"
 
 [profile.release]
 lto = true
-target-cpu = "native"
